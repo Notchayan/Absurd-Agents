@@ -2,9 +2,10 @@ import express from "express";
 import * as dotenv from "dotenv";
 import session from "express-session";
 
-const app = express()
-const port = process.env.PORT || 3000
+dotenv.config();
 
+const app = express()
+app.use(express.json());
 app.use(session({
     secret: 'helloWorld',
     resave: false,
@@ -13,7 +14,24 @@ app.use(session({
   }))
 
 
-app.get('/',(req,res)=>{
+const games = ["wordle", "hangman"];
+let dictionary = process.env.DICTIONARY.split("_");
+
+app.post("/dictionary", (req, res) => {
+	//accept a json array of words, set dictionary to it
+	if (!Array.isArray(req.body)) {
+		res.status(400).json("Not an array");
+		return;
+	}
+	dictionary = req.body;
+	res.status(200).json("OK");
+});
+
+app.get("/", (req, res) => {
+	res.json(games);
+});
+
+app.get('/h',(req,res)=>{
     console.log(req.session.views);
     if (req.session.views) {
         res.send('You are logged in')
@@ -24,6 +42,5 @@ app.get('/',(req,res)=>{
         req.session.save()
     }
 })
-
 
 app.listen(3000);
