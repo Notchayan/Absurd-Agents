@@ -1,0 +1,7 @@
+To do:
+- add a terminal front-end for user interaction - in python
+	- keeps track of cookie for requests
+	- parses json response from server and prompts user for correct input
+	- shows state of game, in ML model parsable way
+	
+- make backend
